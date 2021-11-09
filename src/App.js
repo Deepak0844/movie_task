@@ -1,62 +1,45 @@
 import './App.css';
-import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-
+import { Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import { MovieApp } from './MovieApp';
+import { AddColor } from './AddColor';
+import { AllMovies } from './AllMovies';
 export default function App() {
-  const [movieName,setMovieName] = useState(["name"]);
-  const [movieRating,setMovieRating] = useState(["rating"]);
-  const [movieSummary,setMovieSummary] = useState(["summary"]);
-  const [moviePoster,setMoviePoster] = useState(["poster"]);
-
-  const [movies,setMovies] = useState([]);
-  console.log(movies)
-  
   return (
-    <div className="App">
-   <TextField  onChange={(event)=>setMovieName(event.target.value)} id="standard-basic" label="Movie Name" variant="standard" />
-   <TextField  onChange={(event)=>setMovieRating(event.target.value)} id="standard-basic" label="Rating" variant="standard" />
-   <TextField  onChange={(event)=>setMovieSummary(event.target.value)} id="standard-basic" label="Summary" variant="standard" />
-   <TextField  onChange={(event)=>setMoviePoster(event.target.value)} id="standard-basic" label="Poster" variant="standard" />
-   <Button className="button" onClick={()=>setMovies([...movies,movieName,movieRating,movieSummary,moviePoster])} variant="outlined">Add</Button>
-    
-    {movies.map((mve,index)=>(
-      <MovieList key={index} movie={mve}/>
-      ))}
-      </div>
-    
-  );
+    <Router>
+<div>
+<nav className="navbar navbar-expand-lg navbar-light bg-light">
+  <div className="container-fluid">
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarText">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <Link className="navbar-brand"to="/MovieApp">Movies</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="navbar-brand"to="/addMovie">Add Movie</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="navbar-brand" to="/ColorGame">Color Game</Link>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<Switch>
+   <Route path="/MovieApp">
+   <AllMovies/>
+   </Route>
+   <Route path="/addMovie">
+   <MovieApp/>
+   </Route>
+   <Route path="/ColorGame">
+   <AddColor/>
+   </Route>
+   </Switch>
+</div>
+</Router>   
+);
 }
-function MovieList({movie}){
-  const styles={
-    height:"25px",
-    width:"250px",
-    marginTop:"10px",
-  };
-  return <div
-   style={styles}>
-     <p>{movie}</p>
-
-  </div>;
-  }
-
-
-
-
-
-// function AddColor(){
-//   const [color,setColor] = useState("red");
-//   const styles = {backgroundColor:color};
-//   const [colors,setColors] = useState(["teal","orange","lavender"]);
-//   return(
-//     <div>
-//     <div className="input-searchBox">
-//        <TextField value={color} style={styles} onChange={(event)=>setColor(event.target.value)} id="standard-basic" label="Enter a color" variant="standard" />
-//       <Button className="button" onClick={()=>setColors([...colors,color])} variant="outlined">Add color</Button>
-//       </div>
-//       {colors.map((clr,index)=>(
-//         <ColorBox key={index} color={clr}/>
-//       ))}
-//     </div>
-//   );
-// }
