@@ -1,10 +1,14 @@
 import './App.css';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { Switch, Route, Link ,Redirect,useParams} from "react-router-dom";
+import { Switch, Route, Link ,Redirect} from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useState } from 'react';
 import { MovieList } from './MovieList';
+import { EditMovie } from './EditMovie';
+import { AddColor } from './AddColor';
+import { AddMovie } from './AddMovie';
+import { NotFound } from './NotFound';
+import { MovieDetails } from './MovieDetails';
+import { Welcome } from './Welcome';
 
 export default function App() {
   const InitialMovies = [{
@@ -103,6 +107,9 @@ export default function App() {
    <Route path="/films">
    <Redirect to="/movies"/>
    </Route>
+   <Route path="/movies/edit/:id">
+   <EditMovie movies={movies} setMovies={setMovies}/>
+   </Route>
    <Route path="/movies/:id">
    <MovieDetails movies={movies}/>
    </Route>
@@ -123,110 +130,5 @@ export default function App() {
 </Router>   
 );
 }
-
-function Welcome(){
-  return <h2>welcome</h2>
-}
-function NotFound(){
-  return (
-  <img 
-  className="errorpage" 
-  src="https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif" 
-  alt="404 error"
-  />
-  )
-}
-function MovieDetails({movies}){
-  const{id}=useParams();
-  const movie = movies[id]
-  console.log(movie)
-  const styles = {
-    color: movies.rating < 9 ? "crimson" : "green",
-    fontWeight: "bold",
-  };
-  return(
-    <div>
-   <iframe 
-     width="100%"
-     height="800px"
-     src={movie.trailer}
-     title="YouTube Video Player"
-     frameBorder="0"
-     allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
-     allowFullScreen
-  ></iframe>
-    <h2 className="info-title">{movie.title}</h2>
-    <div className="information">
-    <p>{movie.releasedate}</p>
-    <p>{movie.runningtime}</p>
-    <p>{movie.Genres}</p>
-    <p style={styles}><span className="fa fa-star checked"></span> {movie.rating}</p>
-    </div>
-    <p className="info-title" >{movie.summary}</p>
-</div>
-)}
-
-function AddMovie({ setMovies, movies }) {
-  const [movieName, setMovieName] = useState("");
-  const [movieRating, setMovieRating] = useState("");
-  const [movieSummary, setMovieSummary] = useState("");
-  const [moviePoster, setMoviePoster] = useState("");
-  const [movieRunningtime, setMovieRunningtime] = useState("");
-  const [movieReleasedate, setMovieReleasedate] = useState("");
-  const [movieGenres, setMovieGenres] = useState("");
-  const [movietrailer, setMovieTrailer] = useState("");
-
-  const newMovie = {
-    title: movieName,
-    image: moviePoster,
-    rating: movieRating,
-    summary: movieSummary,
-    runningtime: movieRunningtime,
-    releasedate: movieReleasedate,
-    Genres: movieGenres,
-    trailer:movietrailer
-  };
-  return (
-    <div className="inputs">
-      <TextField value={movieName} onChange={(event) => setMovieName(event.target.value)} id="standard-basic" label="Movie Name" variant="standard" />
-      <TextField value={movieRating} onChange={(event) => setMovieRating(event.target.value)} id="standard-basic" label="Rating" variant="standard" />
-      <TextField value={movieSummary} onChange={(event) => setMovieSummary(event.target.value)} id="standard-basic" label="Summary" variant="standard" />
-      <TextField value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)} id="standard-basic" label="Poster" variant="standard" />
-      <TextField value={movieRunningtime} onChange={(event) => setMovieRunningtime(event.target.value)} id="standard-basic" label="Runningtime" variant="standard" />
-      <TextField value={movieReleasedate} onChange={(event) => setMovieReleasedate(event.target.value)} id="standard-basic" label="Releasedate" variant="standard" />
-      <TextField value={movieGenres} onChange={(event) => setMovieGenres(event.target.value)} id="standard-basic" label="Genres" variant="standard" />
-      <TextField value={movietrailer} onChange={(event) => setMovieTrailer(event.target.value)} id="standard-basic" label="Trailer" variant="standard" />
-      <div>
-        <Button className="button" onClick={() => setMovies([...movies, newMovie])} variant="outlined">Add Movie</Button>
-      </div>
-    </div>
-  );
-}
-
-function AddColor() {
-  const [color, setColor] = useState("red");
-  const [colors, setColors] = useState(["teal", "orange", "crimson"]);
-  return (
-    <section className="container">
-      <div className="input-searchBox">
-        <TextField value={color} onChange={(event) => setColor(event.target.value)} id="standard-basic" label="Enter a color" variant="standard" />
-        <Button className="button" onClick={() => setColors([...colors, color])} variant="outlined">Add color</Button>
-      </div>
-      {colors.map((clr, index) => (
-        <ColorBox key={index} color={clr} />
-      ))}
-    </section>
-  );
-}
-function ColorBox({ color }) {
-  const styles = {
-    backgroundColor: color,
-    height: "25px",
-    width: "350px",
-    marginTop: "10px",
-  };
-  return <div style={styles}></div>;
-}
-
 
 

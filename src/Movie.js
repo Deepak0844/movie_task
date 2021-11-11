@@ -34,7 +34,7 @@ export function Movie({ title, image, rating,releaseDate, runningTime, Genre,id,
         </div>
         </div>
         <div className="edit-delete-button">
-        {deleteButton}{editButton}
+        {editButton} {deleteButton}
         </div>
           <Counter />
     </div>
