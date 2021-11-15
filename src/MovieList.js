@@ -17,6 +17,7 @@ export function MovieList({movies,setMovies}){
                    Genre={Genres}
                    image={image}
                    id={index}
+                   key={index}
                    deleteButton={
                   <IconButton
                   onClick={()=>{

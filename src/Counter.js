@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Badge from '@mui/material/Badge';
 import ThumbUpSharpIcon from '@mui/icons-material/ThumbUpSharp';
 import ThumbDownSharpIcon from '@mui/icons-material/ThumbDownSharp';
+import Card from '@mui/material/Card';
 
 export function Counter() {
   const [like, setLike] = useState(0);
@@ -11,15 +12,25 @@ export function Counter() {
     marginLeft:"0px",
     width:"35px",
     color:"white",
+    border:"none"
+  }
+  const styles={
+    border:"none",
+    outLine:"none",
+    backgroundColor:"transparent"
   }
   return (
+    
     <div>
+      
       <button className="likedislikebtn" onClick={() => setLike(like + 1)}> <Badge style={batchStyle} badgeContent={like}color="primary">
-      <ThumbUpSharpIcon/>
+      <Card style={styles} variant="outlined"><ThumbUpSharpIcon/></Card>
      </Badge></button>
-      <button className="likedislikebtn" onClick={() => setDisLike(disLike + 1)}><Badge style={batchStyle} badgeContent={disLike} color="error">
-      <ThumbDownSharpIcon/>
-      </Badge></button>
+     <button className="likedislikebtn" onClick={() => setDisLike(disLike + 1)}> <Badge style={batchStyle} badgeContent={disLike}color="error">
+      <Card style={styles} variant="outlined"><ThumbDownSharpIcon/></Card>
+     </Badge></button>
+      
     </div>
+   
   );
 }

@@ -9,7 +9,7 @@ export function MovieDetails({ movies }) {
   };
   return (
     <div>
-      <iframe
+       <iframe
         width="100%"
         height="800px"
         src={movie.trailer}

@@ -2,7 +2,7 @@ import IconButton from '@mui/material/IconButton';
 import { Counter } from "./Counter";
 import InfoIcon from '@mui/icons-material/Info';
 import {useHistory} from "react-router-dom";
-
+import Card from '@mui/material/Card';
 
 export function Movie({ title, image, rating,releaseDate, runningTime, Genre,id,deleteButton,editButton }) {
   const history=useHistory();
@@ -13,6 +13,7 @@ export function Movie({ title, image, rating,releaseDate, runningTime, Genre,id,
   return (
     <section className="movies">
     <div className="movieDetails">
+    <Card>
       <img className="poster" src={image} alt={title} />
       <h1>{title}</h1>
       <div className="details">
@@ -37,7 +38,9 @@ export function Movie({ title, image, rating,releaseDate, runningTime, Genre,id,
         {editButton} {deleteButton}
         </div>
           <Counter />
+          </Card>
     </div>
     </section>
+    
   );
 }

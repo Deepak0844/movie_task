@@ -1,6 +1,6 @@
 import './App.css';
-import { Switch, Route, Link ,Redirect} from "react-router-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Switch,Redirect} from "react-router-dom";
+import {Route, useHistory } from "react-router-dom";
 import { useState } from 'react';
 import { MovieList } from './MovieList';
 import { EditMovie } from './EditMovie';
@@ -10,7 +10,21 @@ import { NotFound } from './NotFound';
 import { MovieDetails } from './MovieDetails';
 import { Welcome } from './Welcome';
 
-export default function App() {
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+
+import Button from '@mui/material/Button';
+import { createTheme,ThemeProvider } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
+
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+
+
+ function App() {
   const InitialMovies = [{
     title: "The Shawshank Redemption",
     image: "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg",
@@ -71,35 +85,47 @@ export default function App() {
   summary: "Earth's mightiest heroes must come together and learn to fight as a team if they are going to stop the mischievous Loki and his alien army from enslaving humanity.",
   trailer:"https://www.youtube.com/embed/eOrNdBpGMv8"
 }];
-
   const [movies, setMovies] = useState(InitialMovies);
+  const history = useHistory();
+  const [mode,setMode] = useState("dark");
+  const theme=createTheme({
+  palette:{
+    mode:mode,
+  },
+});//create context
 
   return (
-    <Router>
+    <ThemeProvider theme={theme}>
+      <Paper elevation={4} style={{borderRadius:"0px",minHeight:"100vh"}}>
 <div>
-<nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <div className="container-fluid">
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarText">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-      <li className="nav-item">
-          <Link className="navbar-brand"to="/">Home</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="navbar-brand"to="/movies">Movies</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="navbar-brand"to="/addMovie">Add Movie</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="navbar-brand" to="/colorgame">Color Game</Link>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          <Button variant="Text" color="inherit" onClick={()=> history.push("/")}>
+            Home
+          </Button>
+          <Button onClick={()=>history.push("/movies")} variant="Text" color="inherit">
+            Movies
+          </Button>
+          <Button onClick={()=>history.push("/addMovie")} variant="Text" color="inherit">
+          Add Movie
+          </Button>
+          <Button onClick={()=>history.push("/ColorGame")} variant="Text" color="inherit">
+          Color Game
+          </Button>
+          <Button  onClick={()=>history.push("/tiktactoe")} variant="Text" color="inherit">
+          Tik Tac Toe
+          </Button>
+          <Button  
+          style={{marginLeft:"auto"}}
+          startIcon = {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          onClick={()=>setMode(mode==="dark"?"light":"dark")}
+          variant="Text"
+           color="inherit"
+           >
+         {mode==="light"? "dark":"light"} mode
+          </Button>
+        </Toolbar>
+      </AppBar>
 <Switch>
 <Route exact path="/">
    <Welcome/>
@@ -122,13 +148,115 @@ export default function App() {
    <Route path="/ColorGame">
    <AddColor/>
    </Route>
+   <Route path="/tiktactoe">
+   <TicTacToe/>
+   </Route>
    <Route path="**">
    <NotFound/>
    </Route>
    </Switch>
 </div>
-</Router>   
+</Paper>
+</ThemeProvider>
 );
 }
+
+
+function TicTacToe(){
+  const {width,height} = useWindowSize();
+  const [board,setBoard] = useState([null,null,null,null,null,null,null,null,null]);
+  const [isXturn,setIsXturn] = useState();
+
+  const turnX = ()=>{
+  setIsXturn(true) 
+  }
+  const turnO = ()=>{
+    setIsXturn(false)
+  }
+
+  // const [board,setBoard] = useState([0,1,2,3,4,5,6,7,8])
+const decideWinner=(board)=>{
+  const lines = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,4,8],
+    [2,4,6],
+    [1,4,7],
+    [0,3,6],
+    [2,5,8]
+];
+
+//if winning condition present in board then we have a winner
+
+for(let i=0;i<lines.length;i++){
+  const[a,b,c] = lines[i]
+
+if(board[a]!==null && board[a]===board[b] && board[b]===board[c]){
+  return board[a];
+}
+}
+return null;//if no winner
+};
+
+const winner = decideWinner(board)
+  
+  const handleClick=(index)=>{
+//create a copy of the board & then update the click box
+//update only untouched box & untill no winner
+if(winner===null && !board[index]){
+  const boardCopy = [...board];
+  boardCopy[index] = isXturn ? "X" : "O"
+  setBoard(boardCopy)
+  
+  //toggle X turn
+  setIsXturn(!isXturn)
+}}
+//reset the game
+  const reset =()=>{
+    const boardCopy = [...board];
+     setBoard(boardCopy)
+    for(let i=0;i<boardCopy.length;i++){
+      boardCopy[i]=null
+    }
+  }
+ //display who's turn
+  const display = isXturn? "X":"O";
+
+
+  return(
+    <div className="fullGame">
+       <h2>Select : X or O</h2> 
+     <div className="selectBtn">
+       <Button  variant="contained" color="success" onClick={turnX}>X</Button>
+       <Button variant="contained" color="error" onClick={turnO}>O</Button>
+    </div>
+    <hr></hr>
+      {winner ? " " :<h2> Next player : {display}</h2>}
+      <hr></hr>
+      {winner ? <Confetti width={width} height={height} gravity={0.05}/>:""}
+    <div className="board">
+    {board.map((val,index)=>(
+      <GameBox key={index} val={val} onPlayerClick={()=>handleClick(index)}/>
+    ))}
+    </div>
+    {winner ? <h2>winner is {winner}</h2> :""}
+    <Button style={{marginTop:"10px"}} variant="outlined" onClick={reset}>restart</Button>
+    </div>
+  )
+}
+
+function GameBox({onPlayerClick,val}){
+  const styles={
+    color: val==="X" ? "green":"red",
+  }
+  return(
+  <div  style={styles} onClick={onPlayerClick} className="gameBox">
+    {val}
+  </div>
+  )
+}
+
+export default App;
 
 
