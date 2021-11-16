@@ -18,7 +18,7 @@ export function Movie({ title, image, rating,releaseDate, runningTime, Genre,id,
       <h1>{title}</h1>
       <div className="details">
         <p>{releaseDate}</p>
-        <p>{runningTime}</p>
+        <p>{runningTime}min</p>
         <p>{Genre}</p>
       </div>
       

@@ -1,14 +1,21 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useParams } from "react-router-dom";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { useHistory } from "react-router-dom";
 
-export function EditMovie({ setMovies, movies }) {
+export function EditMovie() {
   const history = useHistory();
   const { id } = useParams();
-  const movie = movies[id];
+  const [movie,setMovie] = useState()
+  useEffect(()=>{
+    fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${id}`)
+    .then((data)=>data.json())
+    .then((mv)=>setMovie(mv))
+  },[]);
+
+  const index = movie.id
   const [movieName, setMovieName] = useState(movie.title);
   const [movieRating, setMovieRating] = useState(movie.rating);
   const [movieSummary, setMovieSummary] = useState(movie.summary);
@@ -28,10 +35,19 @@ export function EditMovie({ setMovies, movies }) {
       Genres: movieGenres,
       trailer: movietrailer
     };
-    const copyMovieList = [...movies];
-    copyMovieList[id] = UpdatedMovie;
-    setMovies(copyMovieList);
+    console.log(UpdatedMovie)
+    console.log(index)
     history.push("/movies");
+      fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${index}`,
+      {method:"PUT",
+    body:JSON.stringify(UpdatedMovie),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(()=>history.push("/movies"));
+  
+
+
   };
   return (
     <div className="inputs">

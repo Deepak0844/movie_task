@@ -4,7 +4,7 @@ import { useState } from 'react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { useHistory } from "react-router-dom";
 
-export function AddMovie({ setMovies, movies }) {
+export function AddMovie() {
   const history = useHistory();
   const [movieName, setMovieName] = useState("");
   const [movieRating, setMovieRating] = useState("");
@@ -24,10 +24,16 @@ export function AddMovie({ setMovies, movies }) {
       releasedate: movieReleasedate,
       Genres: movieGenres,
       trailer: movietrailer
-    };
-    setMovies([...movies, newMovie]);
-    history.push("/movies");
-  };
+};
+    fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/`,
+    {method:"POST",
+     body:JSON.stringify(newMovie),
+     headers: {
+     'Content-Type': 'application/json'
+}
+}).then(()=>history.push("/movies"))
+  
+};
   return (
     <div className="inputs">
       <TextField value={movieName} onChange={(event) => setMovieName(event.target.value)} id="standard-basic" label="Movie Name" variant="standard" />
