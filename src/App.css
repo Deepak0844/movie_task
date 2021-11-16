@@ -107,7 +107,7 @@ h1{
 }
 .likedislikebtn{
   padding-left:75px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   margin: 0;
 }
 body{
@@ -122,7 +122,6 @@ body{
     height: auto;
     width: 300px;
     flex-direction: column;
-    padding-bottom: 10px;
 }
 .info-title{
   text-align: center;
@@ -143,7 +142,8 @@ h1{
 .details>p,.information>p{
 padding:5px;
 margin: 0;
-}}
+}
+}
 .input-searchBox{
   display: flex;
   gap: 10px;
@@ -161,11 +161,11 @@ margin: 0;
 }
 .home{
   margin-top: 50px;
-  position: relative;
-  left: 50%;
+position: absolute;
+left: 40%;
   font: bold 200% ;
   border-right:0.1em solid ;
-  width:150px;
+  width:120px;
   white-space: nowrap;
   overflow: hidden;
   animation: typing 2s steps(10,end),cursor-blink 0.5s step-end infinite alternate;

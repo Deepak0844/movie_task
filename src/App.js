@@ -1,7 +1,7 @@
 import './App.css';
 import { Switch,Redirect} from "react-router-dom";
 import {Route, useHistory } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MovieList } from './MovieList';
 import { EditMovie } from './EditMovie';
 import { AddColor } from './AddColor';

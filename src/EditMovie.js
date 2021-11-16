@@ -6,16 +6,19 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { useHistory } from "react-router-dom";
 
 export function EditMovie() {
-  const history = useHistory();
   const { id } = useParams();
-  const [movie,setMovie] = useState()
+  const [movie,setMovie] = useState(null)
   useEffect(()=>{
     fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${id}`)
     .then((data)=>data.json())
     .then((mv)=>setMovie(mv))
-  },[]);
+  },[id])
+return movie ? <UpdateMovie movie={movie}/> :" "
 
-  const index = movie.id
+}
+
+function UpdateMovie({movie}){
+  const history = useHistory();
   const [movieName, setMovieName] = useState(movie.title);
   const [movieRating, setMovieRating] = useState(movie.rating);
   const [movieSummary, setMovieSummary] = useState(movie.summary);
@@ -35,20 +38,14 @@ export function EditMovie() {
       Genres: movieGenres,
       trailer: movietrailer
     };
-    console.log(UpdatedMovie)
-    console.log(index)
-    history.push("/movies");
-      fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${index}`,
-      {method:"PUT",
-    body:JSON.stringify(UpdatedMovie),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(()=>history.push("/movies"));
-  
-
-
-  };
+    fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${movie.id}`,
+    {method:"PUT",
+  body:JSON.stringify(UpdatedMovie),
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}).then(()=>history.push("/movies"));
+  }
   return (
     <div className="inputs">
       <TextField value={movieName} onChange={(event) => setMovieName(event.target.value)} id="standard-basic" label="Movie Name" variant="standard" />

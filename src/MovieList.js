@@ -12,7 +12,7 @@ export function MovieList(){
         .then((data)=>data.json())
         .then((mvs)=>setMovies(mvs))
 }
-    useEffect(getMovies,[]);
+    useEffect(getMovies,[id]);
 
     const deleteMovie = (id)=>{
         fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${id}`,
@@ -22,7 +22,7 @@ export function MovieList(){
   
 return(
         <section>
-            {movies.map(({title,rating,releasedate,runningtime,Genres,summary,image,id},index)=>(
+            {movies.map(({title,rating,releasedate,runningtime,Genres,summary,image,id})=>(
                 <Movie
                    title={title}
                    rating={rating}
@@ -32,7 +32,7 @@ return(
                    Genre={Genres}
                    image={image}
                    id={id}
-                   key={index}
+                   key={id}
                    deleteButton={
                   <IconButton
                   onClick={()=>{deleteMovie(id)}}
@@ -44,7 +44,7 @@ return(
                 }
                 editButton={
                     <IconButton
-                    onClick={()=>history.push("/movies/edit/" + index)}
+                    onClick={()=>history.push("/movies/edit/" + id)}
                   color="secondary"
                   aria-label="delete movie"
                   >

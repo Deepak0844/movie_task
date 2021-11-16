@@ -1,14 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { useHistory } from "react-router-dom";
 
 export function MovieDetails() {
   const { id } = useParams();
   const [movie,setMovie] = useState({})
+  const history = useHistory();
 useEffect(()=>{
   fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${id}`)
   .then((data)=>data.json())
   .then((mv)=>setMovie(mv))
-},[]);
+},[id]);
   const styles = {
     color: movie.rating < 9 ? "crimson" : "green",
     fontWeight: "bold",
@@ -32,6 +36,9 @@ useEffect(()=>{
         <p style={styles}><span className="fa fa-star checked"></span> {movie.rating}</p>
       </div>
       <p className="info-title">{movie.summary}</p>
+      <Button variant="outlined" onClick={() => history.goBack()} startIcon={<KeyboardBackspaceIcon />}>
+          Back
+        </Button>
     </div>
   );
 }
