@@ -12,7 +12,7 @@ export function MovieList(){
         .then((data)=>data.json())
         .then((mvs)=>setMovies(mvs))
 }
-    useEffect(getMovies,[id]);
+    useEffect(getMovies,[]);
 
     const deleteMovie = (id)=>{
         fetch(`https://6166c4db13aa1d00170a66fd.mockapi.io/movies/${id}`,
